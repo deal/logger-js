@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "lib": ["es5", "es6", "es7"],
+    "baseUrl": "src",
+    "moduleResolution": "node",
+    "module": "esnext",
+    "target": "es6",
+    "sourceMap": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}

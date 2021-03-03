@@ -1,0 +1,5 @@
+##
+# More information on how to configure this file:
+# https://help.github.com/articles/about-codeowners/
+##
+*       @deal/frontend

@@ -1,0 +1,11 @@
+#
+# Check https://docs.gitlab.com/ee/ci/yaml/README.html for more details
+# Use https://gitlab.com/dealdotcom/e2e-testing/-/ci/lint to test this file
+#
+# We can't use the alpine image here since we require git, which isn't present in that image
+image: node:12.14.1
+
+include:
+  - project: "dealdotcom/cicd-tools"
+    ref: master
+    file: "/templates/MinimalWebLibrary.Common.gitlab-ci.yml"

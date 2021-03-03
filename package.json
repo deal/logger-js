@@ -1,0 +1,41 @@
+{
+  "name": "@deal/PACKAGE_NAME",
+  "version": "1.0.0",
+  "description": "PACKAGE_DESCRIPTION",
+  "main": "cjs/index.js",
+  "module": "es/index.js",
+  "typings": "es/index.d.ts",
+  "scripts": {
+    "build": "rollup --config && cp package.json dist/",
+    "dist": "cd dist && semantic-release",
+    "dist:local": "cd dist && yalc publish",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deal/PACKAGE_REPO.git"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/deal/PACKAGE_REPO/issues"
+  },
+  "homepage": "https://github.com/deal/PACKAGE_REPO#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^8.1.0",
+    "@deal/semantic-release-config": "^1.1.1",
+    "commitlint": "^8.1.0",
+    "husky": "^3.0.2",
+    "rollup": "^2.33.3",
+    "rollup-plugin-typescript2": "^0.29.0",
+    "semantic-release": "^17.3.0",
+    "typescript": "^3.9.7",
+    "yalc": "^1.0.0-pre.37"
+  },
+  "dependencies": {}
+}
