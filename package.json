@@ -1,12 +1,12 @@
 {
-  "name": "@deal/PACKAGE_NAME",
+  "name": "@deal/error",
   "version": "1.0.0",
-  "description": "PACKAGE_DESCRIPTION",
-  "main": "cjs/index.js",
-  "module": "es/index.js",
-  "typings": "es/index.d.ts",
+  "description": "Error handling for client and native SDKs",
+  "main": "client/index.js",
+  "typings": "client/index.d.ts",
   "scripts": {
-    "build": "rollup --config && cp package.json dist/",
+    "build": "rm -rf dist && ts-node --script-mode ./build/index.ts",
+    "build:local": "NODE_ENV=development yarn run build && yarn run dist:local",
     "dist": "cd dist && semantic-release",
     "dist:local": "cd dist && yalc publish",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,24 +18,37 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deal/PACKAGE_REPO.git"
+    "url": "git+https://github.com/deal/error-js.git"
   },
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/deal/PACKAGE_REPO/issues"
+    "url": "https://github.com/deal/error-js/issues"
   },
-  "homepage": "https://github.com/deal/PACKAGE_REPO#readme",
+  "homepage": "https://github.com/deal/error-js#readme",
   "devDependencies": {
+    "@babel/core": "^7.13.10",
     "@commitlint/cli": "^8.1.0",
     "@commitlint/config-conventional": "^8.1.0",
     "@deal/semantic-release-config": "^1.1.1",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^17.1.0",
+    "@rollup/plugin-node-resolve": "^11.2.0",
+    "@rollup/plugin-replace": "^2.4.1",
+    "@types/listr": "^0.14.2",
+    "@types/react": "^17.0.2",
+    "chalk": "^4.1.0",
     "commitlint": "^8.1.0",
     "husky": "^3.0.2",
+    "listr": "^0.14.3",
     "rollup": "^2.33.3",
+    "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.29.0",
     "semantic-release": "^17.3.0",
-    "typescript": "^3.9.7",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.2",
     "yalc": "^1.0.0-pre.37"
   },
-  "dependencies": {}
+  "dependencies": {
+    "react": "^17.0.1"
+  }
 }

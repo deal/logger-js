@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "lib": ["es5", "es6", "es7", "dom"],
+    "baseUrl": ".",
+    "moduleResolution": "node",
+    "module": "es2015",
+    "target": "es5",
+    "sourceMap": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "typeRoots": ["../../node_modules/@deal/types/packages", "../../node_modules/@types"]
+  },
+  "include": ["**/*.ts"]
+}
