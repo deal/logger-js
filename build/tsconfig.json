@@ -1,18 +1,16 @@
 {
   "compilerOptions": {
     "lib": ["es5", "es6", "es7"],
-    "baseUrl": "src",
+    "baseUrl": ".",
     "moduleResolution": "node",
-    "module": "esnext",
-    "target": "es6",
-    "sourceMap": true,
+    "module": "commonjs",
+    "target": "es5",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strict": true,
-    "declaration": true,
     "allowSyntheticDefaultImports": true,
-    "jsx": "react"
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["../node_modules"]
 }
