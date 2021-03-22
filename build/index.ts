@@ -1,7 +1,7 @@
 import Listr from 'listr'
 import chalk from 'chalk'
 import buildClient from './build-client'
-import buildSnippet from './build-snippet'
+import buildTypes from './build-types'
 import { RollupWarning } from 'rollup'
 
 const context = {
@@ -20,9 +20,14 @@ const tasks = new Listr(
       title: 'Build Client',
       task: buildClient,
     },
+    // Leaving this in the event we ever want a standalone snippet
+    // {
+    //   title: 'Build Snippet',
+    //   task: buildSnippet,
+    // },
     {
-      title: 'Build Snippet',
-      task: buildSnippet,
+      title: 'Build Types',
+      task: buildTypes,
     },
   ],
   {

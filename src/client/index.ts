@@ -1,5 +1,2 @@
-const entry = () => {
-  console.log('client')
-}
-
-export { entry }
+export * from './types'
+export { default as ErrorClient } from './ErrorClient'

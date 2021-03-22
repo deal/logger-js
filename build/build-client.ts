@@ -71,7 +71,7 @@ export default function buildClient() {
         const build = ctx.clientBuild as rollup.RollupBuild
 
         return build.write({
-          dir: 'dist/client/web',
+          dir: 'dist/client/es',
           format: 'es',
           sourcemap: true,
         })
@@ -83,7 +83,7 @@ export default function buildClient() {
         const build = ctx.clientBuild as rollup.RollupBuild
 
         return build.write({
-          dir: 'dist/client/server',
+          dir: 'dist/client/cjs',
           format: 'cjs',
           sourcemap: true,
         })
