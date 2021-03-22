@@ -7,6 +7,7 @@ import { LoggableUser, ErrorClientConfiguration } from './types'
 export default class ErrorClient {
   private _errorClient: Rollbar | undefined
   private _disabled = false
+  public errorHandler: Rollbar.ExpressErrorHandler | undefined
 
   public constructor(props: ErrorClientConfiguration) {
     this._errorClient = new Rollbar({
@@ -19,6 +20,9 @@ export default class ErrorClient {
       environment: props.environment,
       version: props.version,
     })
+
+    // Expose the error handler as a public property
+    this.errorHandler = this._errorClient.errorHandler
   }
 
   private resetPayload() {
@@ -65,10 +69,6 @@ export default class ErrorClient {
     }
 
     this._errorClient?.configure(configuration)
-  }
-
-  public errorHandler() {
-    return this._errorClient?.errorHandler()
   }
 
   /**
