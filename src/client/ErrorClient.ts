@@ -5,30 +5,47 @@ import { ErrorResponse } from '@apollo/client/link/error'
 import { LoggableUser, ErrorClientConfiguration } from './types'
 
 export default class ErrorClient {
-  private _errorClient: Rollbar | undefined
   private _disabled = false
+  private _accessToken: string | undefined
+
+  public errorClient: Rollbar | undefined
   public errorHandler: Rollbar.ExpressErrorHandler | undefined
 
   public constructor(props: ErrorClientConfiguration) {
-    this._errorClient = new Rollbar({
-      captureUncaught: true,
-      captureUnhandledRejections: true,
-      // With noisy logs, including more than 5 in the telemetry isn't helpful
-      maxTelemetryEvents: 5,
-      // Application specific configuration
-      accessToken: props.accessToken,
-      environment: props.environment,
-      version: props.version,
-    })
-
-    // Expose the error handler as a public property
-    this.errorHandler = this._errorClient.errorHandler
+    this.setAccessToken(props.accessToken)
+    this.setErrorClient(props)
   }
 
   private resetPayload() {
     this.configure({
       payload: {},
     })
+  }
+
+  private setErrorClient(clientConfiguration: ErrorClientConfiguration) {
+    const constructedErrorClient = new Rollbar({
+      captureUncaught: true,
+      captureUnhandledRejections: true,
+      // With noisy logs, including more than 5 in the telemetry isn't helpful
+      maxTelemetryEvents: 5,
+      // Application specific configuration
+      accessToken: clientConfiguration.accessToken,
+      environment: clientConfiguration.environment,
+      version: clientConfiguration.version || 'test-version',
+    })
+
+    this.errorClient = constructedErrorClient
+
+    // Expose the error handler as a public property
+    this.setErrorHandler(constructedErrorClient.errorHandler)
+  }
+
+  private setErrorHandler(errorHandler: Rollbar.ExpressErrorHandler | undefined) {
+    this.errorHandler = errorHandler
+  }
+
+  private setAccessToken(accessToken: string) {
+    this._accessToken = accessToken
   }
 
   /**
@@ -68,7 +85,7 @@ export default class ErrorClient {
       return
     }
 
-    this._errorClient?.configure(configuration)
+    this.errorClient?.configure(configuration)
   }
 
   /**
@@ -82,7 +99,10 @@ export default class ErrorClient {
       return
     }
 
-    this._errorClient?.info(...logArguments)
+    const uuid = this.errorClient?.info(...logArguments)
+    const token = this._accessToken
+
+    return { uuid, token }
   }
 
   /**
@@ -96,7 +116,7 @@ export default class ErrorClient {
       return
     }
 
-    this._errorClient?.error(...logArguments)
+    this.errorClient?.error(...logArguments)
   }
 
   public captureNetworkError(
@@ -124,7 +144,7 @@ export default class ErrorClient {
     /**
      * Log a generic event since we're defining a custom `logLevel`
      */
-    this._errorClient?.log(error)
+    this.errorClient?.log(error)
     console.error(error, operation)
 
     this.resetPayload()
@@ -178,7 +198,7 @@ export default class ErrorClient {
       return
     }
 
-    this._errorClient?.configure({
+    this.errorClient?.configure({
       payload: {
         user,
       },
