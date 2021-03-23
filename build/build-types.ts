@@ -9,7 +9,7 @@ import util from 'util'
 import Listr from 'listr'
 
 /**
- * Build a TypeScript declaration file for the ErrorClient.
+ * Build a TypeScript declaration file for the LoggerClient.
  */
 export default function buildTypes() {
   return new Listr([

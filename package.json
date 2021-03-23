@@ -1,7 +1,7 @@
 {
-  "name": "@deal/error",
+  "name": "@deal/logger",
   "version": "1.0.0",
-  "description": "Error handling for client and native SDKs",
+  "description": "Logger client for web",
   "main": "client/server/index.js",
   "module": "client/browser/index.js",
   "typings": "client/browser/index.d.ts",
@@ -20,13 +20,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deal/error-js.git"
+    "url": "git+https://github.com/deal/logger-js.git"
   },
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/deal/error-js/issues"
+    "url": "https://github.com/deal/logger-js/issues"
   },
-  "homepage": "https://github.com/deal/error-js#readme",
+  "homepage": "https://github.com/deal/logger-js#readme",
   "devDependencies": {
     "@babel/core": "^7.13.10",
     "@commitlint/cli": "^8.1.0",
