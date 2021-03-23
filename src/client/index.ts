@@ -1,2 +1,2 @@
 export * from './types'
-export { default as ErrorClient } from './ErrorClient'
+export { default as LoggerClient } from './LoggerClient'

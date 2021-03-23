@@ -2,16 +2,16 @@ import Rollbar, { Configuration, LogArgument } from 'rollbar'
 import { GraphQLError } from 'graphql'
 import { Operation } from '@apollo/client'
 import { ErrorResponse } from '@apollo/client/link/error'
-import { LoggableUser, ErrorClientConfiguration } from './types'
+import { LoggableUser, LoggerClientConfiguration } from './types'
 
-export default class ErrorClient {
+export default class LoggerClient {
   private _disabled = false
-  private _errorClient: Rollbar | undefined
+  private _loggerClient: Rollbar | undefined
 
   public errorHandler: Rollbar.ExpressErrorHandler | undefined
 
-  public constructor(props: ErrorClientConfiguration) {
-    const errorClient = new Rollbar({
+  public constructor(props: LoggerClientConfiguration) {
+    const loggerClient = new Rollbar({
       captureUncaught: true,
       captureUnhandledRejections: true,
       // With noisy logs, including more than 5 in the telemetry isn't helpful
@@ -22,8 +22,8 @@ export default class ErrorClient {
       version: props.version,
     })
 
-    this._errorClient = errorClient
-    this.errorHandler = errorClient.errorHandler
+    this._loggerClient = loggerClient
+    this.errorHandler = loggerClient.errorHandler
   }
 
   private resetPayload() {
@@ -33,7 +33,7 @@ export default class ErrorClient {
   }
 
   /**
-   * Enable the error client
+   * Enable the logger client
    *
    * @returns
    */
@@ -46,7 +46,7 @@ export default class ErrorClient {
   }
 
   /**
-   * Disable the error client
+   * Disable the logger client
    *
    * @returns
    */
@@ -59,7 +59,7 @@ export default class ErrorClient {
   }
 
   /**
-   * Configure the error client (Rollbar specific)
+   * Configure the logger client (Rollbar specific)
    *
    * @param logArugments Rollbar.Configuration
    * @returns
@@ -69,7 +69,7 @@ export default class ErrorClient {
       return
     }
 
-    this._errorClient?.configure(configuration)
+    this._loggerClient?.configure(configuration)
   }
 
   /**
@@ -83,7 +83,7 @@ export default class ErrorClient {
       return
     }
 
-    this._errorClient?.info(...logArguments)
+    this._loggerClient?.info(...logArguments)
   }
 
   /**
@@ -97,7 +97,7 @@ export default class ErrorClient {
       return
     }
 
-    this._errorClient?.error(...logArguments)
+    this._loggerClient?.error(...logArguments)
   }
 
   public captureNetworkError(
@@ -125,7 +125,7 @@ export default class ErrorClient {
     /**
      * Log a generic event since we're defining a custom `logLevel`
      */
-    this._errorClient?.log(error)
+    this._loggerClient?.log(error)
     console.error(error, operation)
 
     this.resetPayload()
@@ -141,7 +141,7 @@ export default class ErrorClient {
     const isAuthError = gqlError.message.includes('Authorization failure')
 
     // The GraphQLErrors surfaced by `apollo-link-error` do not actually extend the native Error type.
-    //   We create a real Error so the error client recognizes it. This also gives us a stack trace although
+    //   We create a real Error so the logger client recognizes it. This also gives us a stack trace although
     //   those aren't particularly useful since the stack will be the same for all GraphQL errors.
 
     let fingerprint = 'GraphQLError'
@@ -170,7 +170,7 @@ export default class ErrorClient {
 
   /**
    * This identify method is a specific implementation for the broader `configure` method. We want
-   * to enforce a strict contract for the user that we surface back to our error client.
+   * to enforce a strict contract for the user that we surface back to our logger client.
    *
    * @param user LoggableUser
    */
@@ -179,7 +179,7 @@ export default class ErrorClient {
       return
     }
 
-    this._errorClient?.configure({
+    this._loggerClient?.configure({
       payload: {
         user,
       },

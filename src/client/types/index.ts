@@ -1,8 +1,8 @@
 import Rollbar from 'rollbar'
 
-export interface ErrorClient extends Rollbar {}
+export interface LoggerClient extends Rollbar {}
 
-export interface ErrorClientConfiguration {
+export interface LoggerClientConfiguration {
   accessToken: string
   environment: string
   version: string
