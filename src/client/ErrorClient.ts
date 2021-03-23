@@ -5,12 +5,13 @@ import { ErrorResponse } from '@apollo/client/link/error'
 import { LoggableUser, ErrorClientConfiguration } from './types'
 
 export default class ErrorClient {
-  private _errorClient: Rollbar | undefined
   private _disabled = false
+  private _errorClient: Rollbar | undefined
+
   public errorHandler: Rollbar.ExpressErrorHandler | undefined
 
   public constructor(props: ErrorClientConfiguration) {
-    this._errorClient = new Rollbar({
+    const errorClient = new Rollbar({
       captureUncaught: true,
       captureUnhandledRejections: true,
       // With noisy logs, including more than 5 in the telemetry isn't helpful
@@ -21,8 +22,8 @@ export default class ErrorClient {
       version: props.version,
     })
 
-    // Expose the error handler as a public property
-    this.errorHandler = this._errorClient.errorHandler
+    this._errorClient = errorClient
+    this.errorHandler = errorClient.errorHandler
   }
 
   private resetPayload() {

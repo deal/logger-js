@@ -1,6 +1,7 @@
 import * as rollup from 'rollup'
 import typescript from 'rollup-plugin-typescript2'
 import babel from '@rollup/plugin-babel'
+import json from '@rollup/plugin-json'
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
@@ -21,8 +22,10 @@ export default function buildClient() {
           .rollup({
             input: 'src/client/index.ts',
             plugins: [
+              json(),
               resolve({
-                browser: true,
+                browser: false,
+                mainFields: ['main'],
               }),
               commonjs(),
               // The only reason we use both the TypeScript and Babel plugins is
@@ -66,24 +69,12 @@ export default function buildClient() {
       },
     },
     {
-      title: 'Bundle (ES)',
+      title: 'Bundle (Server)',
       task: (ctx) => {
         const build = ctx.clientBuild as rollup.RollupBuild
 
         return build.write({
-          dir: 'dist/client/es',
-          format: 'es',
-          sourcemap: true,
-        })
-      },
-    },
-    {
-      title: 'Bundle (CJS)',
-      task: (ctx) => {
-        const build = ctx.clientBuild as rollup.RollupBuild
-
-        return build.write({
-          dir: 'dist/client/cjs',
+          dir: 'dist/client/server',
           format: 'cjs',
           sourcemap: true,
         })
