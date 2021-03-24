@@ -2,9 +2,6 @@
   "name": "@deal/logger",
   "version": "1.0.0",
   "description": "Logger client for web",
-  "main": "client/server/index.js",
-  "module": "client/browser/index.js",
-  "typings": "client/browser/index.d.ts",
   "scripts": {
     "prepare": "install-peers",
     "build": "rm -rf dist && ts-node --script-mode ./build/index.ts",
