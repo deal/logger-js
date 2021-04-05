@@ -12,5 +12,5 @@ export interface LoggerClientConfiguration {
  * Used to identify the shape of the user within the error client
  */
 export interface LoggableUser {
-  userId: string
+  id: string
 }

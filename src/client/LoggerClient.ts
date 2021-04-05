@@ -179,9 +179,20 @@ export default class LoggerClient {
       return
     }
 
+    /**
+     * This payload structure is custom to Rollbar. From their documentation:
+     *
+     * [snip]... inspecting the `request` for a `person`,
+     * `user` or `user_id` field (in that order). The first one it finds
+     * it uses as the person data assuming the object contains at least
+     * the `id` field... [snip]
+     *
+     */
     this._loggerClient?.configure({
       payload: {
-        user,
+        person: {
+          id: user.id,
+        },
       },
     })
   }
