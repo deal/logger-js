@@ -5,7 +5,7 @@ export interface LoggerClient extends Rollbar {}
 export interface LoggerClientConfiguration {
   accessToken: string
   environment: string
-  version: string
+  version: string | undefined
 }
 
 /**
