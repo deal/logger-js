@@ -87,6 +87,20 @@ export default class LoggerClient {
   }
 
   /**
+   * Log a warning level event
+   *
+   * @param logArguments Rollbar.LogArgument
+   * @returns
+   */
+  public logWarning(...logArguments: LogArgument[]) {
+    if (this._disabled) {
+      return
+    }
+
+    this._loggerClient?.warning(...logArguments)
+  }
+
+  /**
    * Log an error level event
    *
    * @param logArguments Rollbar.LogArgument
@@ -119,13 +133,14 @@ export default class LoggerClient {
         fingerprint: error.name,
         operationName: operation.operationName,
       },
-      logLevel: isIdentityMismatchError ? 'warning' : 'error',
     })
 
-    /**
-     * Log a generic event since we're defining a custom `logLevel`
-     */
-    this._loggerClient?.log(error)
+    if (isIdentityMismatchError) {
+      this.logWarning(error)
+    } else {
+      this.logError(error)
+    }
+
     console.error(error, operation)
 
     this.resetPayload()
