@@ -26,7 +26,7 @@ export default class LoggerClient {
     this.errorHandler = loggerClient.errorHandler
   }
 
-  private resetPayload() {
+  public resetPayload() {
     this.configure({
       payload: {},
     })
