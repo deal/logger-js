@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: daily
+      time: '07:00'
+      timezone: 'America/Los_Angeles'
+    pull-request-branch-name:
+      separator: '-'
+    open-pull-requests-limit: 20
+    allow:
+      - dependency-name: '@deal/*'
+    commit-message:
+      prefix: 'deps'
+      prefix-development: 'deps-dev'
