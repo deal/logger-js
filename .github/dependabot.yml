@@ -1,4 +1,10 @@
 version: 2
+registries:
+  npm-yarn:
+    type: npm-registry
+    url: https://registry.yarnpkg.com
+    username: curated-dependabot
+    password: ${{secrets.NPM_REGISTRY_PASSWORD}}
 updates:
   - package-ecosystem: npm
     directory: '/'
@@ -14,3 +20,5 @@ updates:
     commit-message:
       prefix: 'deps'
       prefix-development: 'deps-dev'
+    registries:
+      - npm-yarn
