@@ -8,6 +8,7 @@ import fs from 'fs'
 import path from 'path'
 import util from 'util'
 import Listr from 'listr'
+import pkg from '../package.json'
 
 /**
  * Build the rollbar error client
@@ -20,6 +21,7 @@ export default function buildClient() {
         return rollup
           .rollup({
             input: 'src/client/index.ts',
+            external: Object.keys(pkg.dependencies || {}),
             plugins: [
               resolve({
                 browser: true,
@@ -66,13 +68,29 @@ export default function buildClient() {
       },
     },
     {
-      title: 'Bundle (Browser)',
+      title: 'Bundle (Browser - CJS)',
       task: (ctx) => {
         const build = ctx.clientBuild as rollup.RollupBuild
 
         return build.write({
-          dir: 'dist/client/browser',
+          dir: 'dist/client/browser/cjs',
+          format: 'cjs',
+          preserveModules: true,
+          preserveModulesRoot: 'src/client',
+          sourcemap: true,
+        })
+      },
+    },
+    {
+      title: 'Bundle (Browser - ES)',
+      task: (ctx) => {
+        const build = ctx.clientBuild as rollup.RollupBuild
+
+        return build.write({
+          dir: 'dist/client/browser/es',
           format: 'es',
+          preserveModules: true,
+          preserveModulesRoot: 'src/client',
           sourcemap: true,
         })
       },
@@ -83,10 +101,16 @@ export default function buildClient() {
         return util
           .promisify(fs.mkdir)(path.join(__dirname, '../dist'), { recursive: true })
           .then(() => {
-            return util.promisify(fs.copyFile)(
-              path.join(__dirname, '../package.json'),
-              path.join(__dirname, '../dist/package.json')
-            )
+            return Promise.all([
+              util.promisify(fs.copyFile)(
+                path.join(__dirname, '../package.json'),
+                path.join(__dirname, '../dist/package.json')
+              ),
+              util.promisify(fs.copyFile)(
+                path.join(__dirname, '../src/client/package.browser.json'),
+                path.join(__dirname, '../dist/client/browser/package.json')
+              ),
+            ])
           })
       },
     },
