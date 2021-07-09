@@ -33,7 +33,7 @@ export default class LoggerClient {
   }
 
   /**
-   * Enable the logger client
+   * Disable the logger client
    *
    * @returns
    */
@@ -46,7 +46,7 @@ export default class LoggerClient {
   }
 
   /**
-   * Disable the logger client
+   * Enable the logger client
    *
    * @returns
    */
@@ -73,7 +73,7 @@ export default class LoggerClient {
   }
 
   /**
-   * Log an info level event
+   * Log an info level event to the logger client
    *
    * @param logArguments Rollbar.LogArgument
    * @returns
@@ -87,7 +87,7 @@ export default class LoggerClient {
   }
 
   /**
-   * Log a warning level event
+   * Log a warning level event to the logger client
    *
    * @param logArguments Rollbar.LogArgument
    * @returns
@@ -101,7 +101,7 @@ export default class LoggerClient {
   }
 
   /**
-   * Log an error level event
+   * Log an error level event to the logger client
    *
    * @param logArguments Rollbar.LogArgument
    * @returns
@@ -112,6 +112,42 @@ export default class LoggerClient {
     }
 
     this._loggerClient?.error(...logArguments)
+  }
+
+  /**
+   * Log an info level event to the logger client and console
+   */
+  public captureInfo(message: string, ...logArguments: LogArgument[]) {
+    if (this._disabled) {
+      return
+    }
+
+    this.logInfo(message, ...logArguments)
+    console.info(message, ...logArguments)
+  }
+
+  /**
+   * Log an warning level event to the logger client and console
+   */
+  public captureWarning(error: Error, ...logArguments: LogArgument[]) {
+    if (this._disabled) {
+      return
+    }
+
+    this.logWarning(error, ...logArguments)
+    console.warn(error, ...logArguments)
+  }
+
+  /**
+   * Log an error level event to the logger client and console
+   */
+  public captureError(error: Error, ...logArguments: LogArgument[]) {
+    if (this._disabled) {
+      return
+    }
+
+    this.logError(error, ...logArguments)
+    console.error(error, ...logArguments)
   }
 
   public captureNetworkError(
@@ -137,11 +173,11 @@ export default class LoggerClient {
 
     if (isIdentityMismatchError) {
       this.logWarning(error)
+      console.warn(error, operation)
     } else {
       this.logError(error)
+      console.error(error, operation)
     }
-
-    console.error(error, operation)
 
     this.resetPayload()
   }
