@@ -26,12 +26,6 @@ export default class LoggerClient {
     this.errorHandler = loggerClient.errorHandler
   }
 
-  public resetPayload() {
-    this.configure({
-      payload: {},
-    })
-  }
-
   /**
    * Disable the logger client
    *
@@ -163,23 +157,19 @@ export default class LoggerClient {
     //   impersonation flows.
     const isIdentityMismatchError = error.name === 'IdentityMismatchError'
 
-    this.configure({
-      payload: {
-        // TODO: Set the user? does this override?
-        fingerprint: error.name,
-        operationName: operation.operationName,
-      },
-    })
-
-    if (isIdentityMismatchError) {
-      this.logWarning(error)
-      console.warn(error, operation)
-    } else {
-      this.logError(error)
-      console.error(error, operation)
+    const payload = {
+      // TODO: Set the user? does this override?
+      fingerprint: error.name,
+      operationName: operation.operationName,
     }
 
-    this.resetPayload()
+    if (isIdentityMismatchError) {
+      this.logWarning(error, payload)
+      console.warn(error, operation)
+    } else {
+      this.logError(error, payload)
+      console.error(error, operation)
+    }
   }
 
   public captureGQLError(gqlError: GraphQLError, operation: Operation) {
@@ -202,21 +192,22 @@ export default class LoggerClient {
       fingerprint = gqlError.extensions.classification
     }
 
-    this.configure({
-      payload: {
-        // TODO: Set the user? does this override?
-        fingerprint,
-        operationName: operation.operationName,
-      },
-      logLevel: isAuthError ? 'warning' : 'error',
-    })
+    const payload = {
+      // TODO: Set the user? does this override?
+      fingerprint,
+      operationName: operation.operationName,
+    }
+    const logLevel = isAuthError ? 'warning' : 'error'
 
     const err = new Error(`${operation.operationName}: ${gqlError.message}`)
 
-    this.logError(gqlError.message)
-    console.error(err, operation)
-
-    this.resetPayload()
+    if (logLevel === 'error') {
+      this.logError(gqlError.message, payload)
+      console.error(err, operation)
+    } else {
+      this.logWarning(gqlError.message, payload)
+      console.warn(err, operation)
+    }
   }
 
   /**
