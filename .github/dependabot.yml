@@ -3,8 +3,7 @@ registries:
   npm-yarn:
     type: npm-registry
     url: https://registry.yarnpkg.com
-    username: curated-dependabot
-    password: ${{secrets.NPM_REGISTRY_PASSWORD}}
+    token: ${{secrets.NPM_DEPENDABOT_AUTOMATION_TOKEN}}
 updates:
   - package-ecosystem: npm
     directory: '/'
