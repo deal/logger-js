@@ -1,0 +1,23 @@
+version: 2
+registries:
+  npm-yarn:
+    type: npm-registry
+    url: https://registry.yarnpkg.com
+    token: ${{secrets.NPM_DEPENDABOT_AUTOMATION_TOKEN}}
+updates:
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: daily
+      time: '07:00'
+      timezone: 'America/Los_Angeles'
+    pull-request-branch-name:
+      separator: '-'
+    open-pull-requests-limit: 20
+    allow:
+      - dependency-name: '@deal/*'
+    commit-message:
+      prefix: 'deps'
+      prefix-development: 'deps-dev'
+    registries:
+      - npm-yarn
