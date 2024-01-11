@@ -304,9 +304,9 @@
   dependencies:
     find-up "^4.0.0"
 
-"@deal/semantic-release-config@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@deal/semantic-release-config/-/semantic-release-config-1.4.1.tgz#95544f14b4df6705cda2d091fdb5b13b943a7d74"
+"@deal/semantic-release-config@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@deal/semantic-release-config/-/semantic-release-config-1.5.1.tgz#1f7a1723e88e99a4b45a6f8e7d618dd672e3c7ab"
   dependencies:
     conventional-changelog-conventionalcommits "^4.6.1"
 
