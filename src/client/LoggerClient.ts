@@ -11,6 +11,18 @@ export default class LoggerClient {
   public errorHandler: Rollbar.ExpressErrorHandler | undefined
 
   public constructor(props: LoggerClientConfiguration) {
+    this._disabled = Boolean(props.disabled)
+    if (this._disabled) {
+      return
+    }
+    this.initLoggerClient(props)
+  }
+
+  private initLoggerClient(props: LoggerClientConfiguration) {
+    if (this._loggerClient) {
+      return
+    }
+
     const loggerClient = new Rollbar({
       captureUncaught: true,
       captureUnhandledRejections: true,
