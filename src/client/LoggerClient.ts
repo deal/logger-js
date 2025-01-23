@@ -20,10 +20,15 @@ export default class LoggerClient {
       accessToken: props.accessToken,
       environment: props.environment,
       version: props.version,
+      enabled: props.enabled,
     })
 
     this._loggerClient = loggerClient
     this.errorHandler = loggerClient.errorHandler
+
+    if (props.enabled === false) {
+      this.disable()
+    }
   }
 
   /**
