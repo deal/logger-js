@@ -6,7 +6,6 @@ export interface LoggerClientConfiguration {
   accessToken: string
   environment: string
   version: string | undefined
-  disabled: boolean | undefined
 }
 
 /**
